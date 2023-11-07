@@ -9,11 +9,11 @@ namespace LexiconIMDB.Data
 {
     public class LexiconIMDBContext : DbContext
     {
-        public LexiconIMDBContext (DbContextOptions<LexiconIMDBContext> options)
+        public LexiconIMDBContext(DbContextOptions<LexiconIMDBContext> options)
             : base(options)
         {
         }
 
-        public DbSet<LexiconIMDB.Models.Entities.Movie> Movie { get; set; } = default!;
+        public DbSet<Movie> Movie => Set<Movie>();
     }
 }
