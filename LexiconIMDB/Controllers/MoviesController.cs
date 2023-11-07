@@ -22,9 +22,7 @@ namespace LexiconIMDB.Controllers
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-              return _context.Movie != null ? 
-                          View(await _context.Movie.ToListAsync()) :
-                          Problem("Entity set 'LexiconIMDBContext.Movie'  is null.");
+            return View(await _context.Movie.ToListAsync());
         }
 
         // GET: Movies/Details/5
@@ -150,14 +148,14 @@ namespace LexiconIMDB.Controllers
             {
                 _context.Movie.Remove(movie);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MovieExists(int id)
         {
-          return (_context.Movie?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Movie?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
