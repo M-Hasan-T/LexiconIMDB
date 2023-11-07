@@ -1,6 +1,4 @@
-﻿using LexiconIMDB.Models.Entities;
-
-namespace LexiconIMDB.Models
+﻿namespace LexiconIMDB.Models.Entities
 {
     public class Movie
     {

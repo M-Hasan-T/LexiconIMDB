@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using LexiconIMDB.Data;
 namespace LexiconIMDB
 {
     public class Program
@@ -5,6 +8,8 @@ namespace LexiconIMDB
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddDbContext<LexiconIMDBContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("LexiconIMDBContext") ?? throw new InvalidOperationException("Connection string 'LexiconIMDBContext' not found.")));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
