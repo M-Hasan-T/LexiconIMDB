@@ -20,12 +20,19 @@ namespace LexiconIMDB.Controllers
         }
 
         // GET: Movies
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Movie.ToListAsync());
         }
 
+        public async Task<IActionResult> Filter(string title, int? genre)
+        {
+            return View();
+        }
+
         // GET: Movies/Details/5
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Movie == null)
