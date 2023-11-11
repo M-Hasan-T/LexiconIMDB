@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LexiconIMDB.Data;
 using LexiconIMDB.Models.Entities;
+using LexiconIMDB.Models.ViewModels;
 
 namespace LexiconIMDB.Controllers
 {
@@ -38,6 +39,60 @@ namespace LexiconIMDB.Controllers
 
             return View(nameof(Index), await model.ToListAsync());
         }
+
+        public async Task<IActionResult> Filter2(IndexViewModel viewModel)
+        {
+            var movies = string.IsNullOrWhiteSpace(viewModel.Title) ?
+                                _context.Movie :
+                                _context.Movie.Where(m => m.Title.StartsWith(viewModel.Title));
+
+            movies = viewModel.Genre is null ?
+                                movies :
+                                movies.Where(m => m.Genre == viewModel.Genre);
+
+            var model = new IndexViewModel
+            {
+                Movies = await movies.ToListAsync(),
+                Genres = await GetGenresAsync()
+            };
+
+            return View(nameof(Index2), model);
+        }
+
+        private async Task<IEnumerable<SelectListItem>> GetGenresAsync()
+        {
+            return await _context.Movie.Select(m => m.Genre)
+                                .Distinct()
+                                .Select(g => new SelectListItem
+                                {
+                                    Text = g.ToString(),
+                                    Value = g.ToString()
+                                })
+                                .ToListAsync();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index2()
+        {
+            var movies = await _context.Movie.ToListAsync();
+
+            var model = new IndexViewModel
+            {
+                Movies = movies,
+                Genres = movies.Select(m => m.Genre)
+                                .Distinct()
+                                .Select(g => new SelectListItem
+                                {
+                                    Text = g.ToString(),
+                                    Value = g.ToString()
+                                })
+                                .ToList()
+            };
+
+            return View(model);
+        }
+
+
 
         // GET: Movies/Details/5
         [HttpGet]
